@@ -70,6 +70,7 @@
     (function initMobileMenu() {
         const mobileMenuButton = document.querySelector('.header__mobile-menu');
         const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu__close');
         const mobileMenuLinks = document.querySelectorAll('.mobile-menu__link');
         
         if (!mobileMenuButton || !mobileMenu) return;
@@ -102,6 +103,11 @@
 
         // Event listeners
         mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        
+        // Close menu when clicking close button
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
+        }
         
         // Close menu when clicking on links
         mobileMenuLinks.forEach(link => {
@@ -157,6 +163,51 @@
                 }
             });
         });
+    })();
+
+    // ===== 2-STEP FORM =====
+    
+    (function initTwoStepForm() {
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const nextStepBtn = document.getElementById('next-step-btn');
+        const backStepBtn = document.getElementById('back-step-btn');
+        
+        if (!step1 || !step2 || !nextStepBtn) return;
+        
+        // Move to step 2
+        nextStepBtn.addEventListener('click', function() {
+            const phone = document.getElementById('phone').value.trim();
+            const appliance = document.getElementById('appliance').value;
+            
+            if (!phone || !appliance) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+            
+            // Focus on first field of step 2
+            const nameField = document.getElementById('name');
+            if (nameField) {
+                setTimeout(() => nameField.focus(), 100);
+            }
+        });
+        
+        // Back to step 1
+        if (backStepBtn) {
+            backStepBtn.addEventListener('click', function() {
+                step2.style.display = 'none';
+                step1.style.display = 'block';
+                
+                // Focus on phone field
+                const phoneField = document.getElementById('phone');
+                if (phoneField) {
+                    setTimeout(() => phoneField.focus(), 100);
+                }
+            });
+        }
     })();
 
     // ===== FORM VALIDATION =====
@@ -274,6 +325,53 @@
                 }, 5000);
             }, 2000);
         }
+    })();
+
+    // ===== STICKY CTA BAR =====
+    
+    (function initStickyCTA() {
+        const stickyCTA = document.getElementById('sticky-cta');
+        const stickyScheduleBtn = document.getElementById('sticky-schedule-btn');
+        
+        if (!stickyCTA) return;
+        
+        // Show sticky CTA after scrolling past hero section
+        function handleScroll() {
+            const heroSection = document.querySelector('.hero');
+            if (!heroSection) return;
+            
+            const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > heroBottom) {
+                stickyCTA.style.display = 'block';
+            } else {
+                stickyCTA.style.display = 'none';
+            }
+        }
+        
+        // Handle sticky schedule button click
+        if (stickyScheduleBtn) {
+            stickyScheduleBtn.addEventListener('click', function() {
+                // Scroll to contact form or open modal
+                const contactForm = document.querySelector('.contact-form');
+                if (contactForm) {
+                    contactForm.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+        
+        // Throttle scroll events
+        let scrollTimeout;
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(handleScroll, 10);
+        });
+        
+        // Initial check
+        handleScroll();
     })();
 
     // ===== SCROLL ANIMATIONS =====
