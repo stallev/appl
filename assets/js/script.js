@@ -4,8 +4,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
     
     if (mobileMenuToggle && navMenu) {
-        mobileMenuToggle.addEventListener('click', function() {
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Toggle menu visibility
             navMenu.classList.toggle('active');
+            
+            // Update aria-expanded for accessibility
+            const isExpanded = navMenu.classList.contains('active');
+            mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
+            
+            // Prevent body scroll when menu is open
+            if (isExpanded) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (navMenu.classList.contains('active') && 
+                !navMenu.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu when clicking on a nav link
+        const navLinks = navMenu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
         });
     }
 });
@@ -610,12 +646,6 @@ function initABTesting() {
     }
     
     trackEvent('ab_test_assigned', { group: testGroup });
-}
-
-// ===== ADDITIONAL ANIMATIONS =====
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
 }
 
 // ===== ERROR HANDLING =====

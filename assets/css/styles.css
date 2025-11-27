@@ -92,6 +92,7 @@ p {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 0;
+    position: relative;
 }
 
 .logo {
@@ -105,6 +106,8 @@ p {
     display: flex;
     list-style: none;
     gap: 2rem;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-link {
@@ -138,6 +141,7 @@ p {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
+    color: #1a365d;
 }
 
 /* ===== HERO SECTION ===== */
@@ -592,6 +596,10 @@ p {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
+    .nav {
+        flex-wrap: wrap;
+    }
+    
     .nav-menu {
         display: none;
         position: absolute;
@@ -602,14 +610,58 @@ p {
         flex-direction: column;
         padding: 1rem;
         box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        z-index: 1000;
+        width: 100%;
+        margin: 0;
+        gap: 0;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .nav-menu li:last-child {
+        border-bottom: none;
+    }
+    
+    .nav-menu .nav-link {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0;
     }
 
     .nav-menu.active {
-        display: flex;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .mobile-menu-toggle {
-        display: block;
+        display: block !important;
+        z-index: 1001;
+        position: relative;
+        background: #ffffff;
+        border: 2px solid #1a365d;
+        color: #1a365d;
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin-left: auto;
+        min-width: 44px;
+        min-height: 44px;
+        line-height: 1;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .nav .phone-btn,
+    .header .phone-btn,
+    .phone-btn {
+        display: none !important;
+        visibility: hidden !important;
     }
 
     .hero h1 {
